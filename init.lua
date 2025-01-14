@@ -208,7 +208,10 @@ require('lazy').setup({
 
       'nvim-telescope/telescope.nvim',
     },
-    config = true,
+    config = function()
+      require('neogit'):setup()
+      vim.api.nvim_set_keymap('n', '<leader>n', ':Neogit<CR>', { noremap = true, silent = true })
+    end,
   },
 
   -- {
@@ -761,6 +764,18 @@ require('lazy').setup({
     end,
   },
 
+  -- Markdown preview plugin
+  {
+    'toppair/peek.nvim',
+    event = { 'VeryLazy' },
+    build = 'deno task --quiet build:fast',
+    config = function()
+      require('peek').setup()
+      vim.api.nvim_create_user_command('PeekOpen', require('peek').open, {})
+      vim.api.nvim_create_user_command('PeekClose', require('peek').close, {})
+    end,
+  },
+
   {
     'sainnhe/sonokai',
     lazy = false,
@@ -774,6 +789,7 @@ require('lazy').setup({
       vim.cmd.colorscheme 'sonokai'
     end,
   },
+
   -- {
   -- 	"folke/tokyonight.nvim",
   -- 	priority = 1000,
